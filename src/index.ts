@@ -119,9 +119,14 @@ function parseAsSFC(code: string, options: ParserOptions) {
             ? Object.assign(template, concreteInfo)
             : undefined
 
-    const scriptParser = getScriptParser(options.parser, () =>
-        getParserLangFromSFC(rootAST),
+    const scriptParser = getScriptParser(
+        options.parser,
+        () =>
+            getParserLangFromSFC(rootAST) ||
+            options.vueFeatures?.defaultScriptLang ||
+            null,
     )
+
     let result: AST.ESLintExtendedProgram
     let scriptSetup: VElement | undefined
     if (skipParsingScript || !scripts.length) {
